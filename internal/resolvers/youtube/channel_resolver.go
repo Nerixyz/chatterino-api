@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strings"
 
 	"github.com/Chatterino/api/internal/db"
 	"github.com/Chatterino/api/internal/logger"
@@ -26,9 +27,7 @@ func (r *YouTubeChannelResolver) Check(ctx context.Context, url *url.URL) (conte
 		return ctx, false
 	}
 
-	q := url.Query()
-	// TODO(go1.18): Replace with q.Has("v") once we've transitioned to at least go 1.17 as least supported version
-	if q.Has("v") {
+	if strings.EqualFold(url.Path, "/watch") {
 		return ctx, false
 	}
 

@@ -126,6 +126,16 @@ func TestChannelResolver(t *testing.T) {
 				expected: false,
 			},
 			{
+				label:    "Correct domain, bad (playlist) path",
+				input:    utils.MustParseURL("https://www.youtube.com/playlist?list=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct domain, correct path",
+				input:    utils.MustParseURL("https://youtube.com/aragusea"),
+				expected: true,
+			},
+			{
 				label:    "Correct domain, correct path",
 				input:    utils.MustParseURL("https://youtube.com/user/aragusea"),
 				expected: true,
@@ -142,7 +152,17 @@ func TestChannelResolver(t *testing.T) {
 			},
 			{
 				label:    "Incorrect domain",
+				input:    utils.MustParseURL("https://example.com/watch"),
+				expected: false,
+			},
+			{
+				label:    "Incorrect domain, bad query",
 				input:    utils.MustParseURL("https://example.com/watch?v=foobar"),
+				expected: false,
+			},
+			{
+				label:    "Incorrect domain, bad path",
+				input:    utils.MustParseURL("https://example.com/playlist?v=foobar"),
 				expected: false,
 			},
 		}

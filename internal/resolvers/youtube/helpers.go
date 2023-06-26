@@ -25,11 +25,15 @@ func getYoutubeVideoIDFromURL(url *url.URL) string {
 	}
 
 	// ex: https://www.youtube.com/shorts/nSW6scUfnFw
-	if base, rest := path.Split(url.Path); base == "/shorts/" {
+	base, rest := path.Split(url.Path)
+	if base == "/shorts/" {
 		return rest
 	}
 
-	return url.Query().Get("v")
+	if rest == "watch" || strings.HasPrefix(base, "/watch/") {
+		return url.Query().Get("v")
+	}
+	return ""
 }
 
 func getYoutubeVideoIDFromURL2(url *url.URL) string {

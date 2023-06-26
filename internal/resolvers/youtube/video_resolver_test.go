@@ -75,7 +75,7 @@ func TestVideoResolver(t *testing.T) {
 
 		tests := []checkTest{
 			{
-				label:    "Correct domain, correct path",
+				label:    "Correct domain, correct path, correct query",
 				input:    utils.MustParseURL("https://youtube.com/watch?v=foobar"),
 				expected: true,
 			},
@@ -90,9 +90,44 @@ func TestVideoResolver(t *testing.T) {
 				expected: true,
 			},
 			{
-				label:    "Correct (sub)domain, correct path",
+				label:    "Correct (sub)domain, correct path, correct query",
 				input:    utils.MustParseURL("https://www.youtube.com/watch?v=foobar"),
 				expected: true,
+			},
+			{
+				label:    "Correct (sub)domain, correct path (2), correct query",
+				input:    utils.MustParseURL("https://www.youtube.com/watch/?v=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct (sub)domain, correct path (3), correct query",
+				input:    utils.MustParseURL("https://www.youtube.com/watch/////?v=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct (sub)domain, correct path (4), correct query",
+				input:    utils.MustParseURL("https://www.youtube.com/watch/foobar/?v=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct (sub)domain, correct path (5), correct query",
+				input:    utils.MustParseURL("https://www.youtube.com/watch/foobar?v=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct (sub)domain, correct path (6), correct query",
+				input:    utils.MustParseURL("https://www.youtube.com/watch/foobar/baz?v=foobar"),
+				expected: true,
+			},
+			{
+				label:    "Correct domain, incorrect path, correct query",
+				input:    utils.MustParseURL("https://youtube.com/Watch?v=foobar"),
+				expected: false,
+			},
+			{
+				label:    "Correct domain, incorrect path (2), correct query",
+				input:    utils.MustParseURL("https://youtube.com/logout?v=foobar"),
+				expected: false,
 			},
 			{
 				label:    "Correct domain, no path",
@@ -102,6 +137,11 @@ func TestVideoResolver(t *testing.T) {
 			{
 				label:    "Incorrect domain",
 				input:    utils.MustParseURL("https://example.com/watch?v=foobar"),
+				expected: false,
+			},
+			{
+				label:    "Incorrect domain, incorrect path",
+				input:    utils.MustParseURL("https://example.com/Watch?v=foobar"),
 				expected: false,
 			},
 		}
